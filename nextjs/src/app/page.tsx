@@ -1,8 +1,24 @@
-export default function Home() {
+import { createClient } from './utils/supabase/server'
+import { cookies } from 'next/headers'
+
+export default async function Page() {
+  const cookieStore = await cookies()
+  const supabase = createClient(cookieStore)
+
+  let page = Math.floor(Math.random() * 6) * 1000;
+
+  const { data: players } = await supabase.from('players').select('*').range(page, page + 1000)
+  let player = players?.at(Math.floor(Math.random()*players?.length))
+  let imgsrc = "https://www.basketball-reference.com/req/202106291/images/headshots/" + player.id + ".jpg";
+
   return (
-    <form className="flex flex-col items-center space-y-5">
-      <input className="border-2 border-gray-300" type="text" />
-      <button className="rounded-md bg-yellow-100 px-4 py-2 text-black" type="submit">Submit Guess</button>
-    </form>
-  );
+    <div className='flex flex-col items-center'>
+      {player.name}
+      <img src={imgsrc} alt="" />
+      <div>
+        <input className='text-center' type="text" />
+      </div>
+      <button>Submit Guess</button>
+    </div>
+  )
 }

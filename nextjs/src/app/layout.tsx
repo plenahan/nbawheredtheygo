@@ -37,7 +37,7 @@ export default async function RootLayout({
               <a href="/">
                 <h1 className="text-3xl font-bold underline p-10">Where'd They Go?</h1>
               </a>
-              <div className="rounded-full bg-blue-200 p-10 w-full">{children}</div>
+              <div className="rounded-3xl bg-blue-200 p-10 w-full items-center">{children}</div>
             </div>
           </div>
         </div>
