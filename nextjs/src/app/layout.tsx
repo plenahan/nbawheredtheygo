@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Image from "next/image";
 import "./globals.css";
+import github from './icons/github-mark-white.svg';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,7 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased mx-80 my-5 bg-yellow-50 h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} flex flex-col antialiased mt-5 bg-blue-50 h-screen items-center`}
       >
         <div>
           <div className="flex flex-row justify-end">
@@ -37,10 +39,15 @@ export default async function RootLayout({
               <a href="/">
                 <h1 className="text-3xl font-bold underline p-10">Where'd They Go?</h1>
               </a>
-              <div className="rounded-3xl bg-blue-200 p-10 w-auto items-center">{children}</div>
+              <div className="rounded-3xl bg-blue-400 p-10 w-auto items-center">{children}</div>
             </div>
           </div>
         </div>
+        <footer className="flex flex-row items-end justify-center w-full h-full mt-20 rounded-t-xl">
+          <div className="flex flex-row items-center justify-center bg-black w-full max-h-24">
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/plenahan/nbawheredtheygo"><Image priority className="w-14 py-4" src={github} alt={""}/></a>
+          </div>
+        </footer>
       </body>
     </html>
   );
