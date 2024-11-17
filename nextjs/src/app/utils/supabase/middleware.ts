@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export const createClient = (request: NextRequest) => {
   // Create an unmodified response
@@ -32,4 +33,3 @@ export const createClient = (request: NextRequest) => {
 
   return supabaseResponse
 };
-
