@@ -26,33 +26,66 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
     const [highScore, setHighScore] = useState(0);
     const [filteredColleges, setFilteredColleges] = useState(colleges);
     const [selectedCollege, setSelectedCollege] = useState(colleges.at(0));
+    const [guess, setGuess] = useState(0);
 
     async function guessCollege() {
-        let a = document.getElementById('selectedCollege');
-        let correct = false;
-        if(playerColleges == null || playerColleges.length == 0) {
-            if(selectedCollege?.name == 'None') {
-                correct = true;
-                a!.style.backgroundColor = 'lightgreen';
-            } else {
-                correct = false;
-                a!.style.backgroundColor = 'indianred';
-            }
-        } else {
-            playerColleges.forEach(playerCollege => {
-                if(playerCollege.colleges.name == selectedCollege?.name) {
-                    a!.style.backgroundColor = 'lightgreen';
-                    correct = true;
-                }
-            })
-            if(!correct) {
-                a!.style.backgroundColor = 'indianred';
-            }
-        } 
-        toggleCollege(false);
-        updateScore(correct);
-        await new Promise(resolve => setTimeout(resolve, 2000))
-        fetchData();
+      setGuess(guess+1);
+      let a = document.getElementById('selectedCollege');
+      let correct = false;
+      if(playerColleges == null || playerColleges.length == 0) {
+          if(selectedCollege?.name == 'None') {
+              correct = true;
+          } else {
+              correct = false;
+          }
+      } else {
+          playerColleges.forEach(playerCollege => {
+              if(playerCollege.colleges.name == selectedCollege?.name) {
+                  correct = true;
+              }
+          })
+      }
+
+      if(correct){
+        setSelectedCollegeColor('lightgreen');
+      } else {
+        setSelectedCollegeColor('indianred');
+      }
+
+      switch(guess) {
+        case 0:
+          console.log('g1');
+          if(correct){
+            setGuess(0);
+            toggleCorrectCollege(false);
+            updateScore(correct);
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            fetchData();
+          }
+          break;
+        case 1: 
+          console.log('g2');
+          if(correct){
+            setGuess(0);
+            toggleCorrectCollege(false);
+            updateScore(correct);
+            await new Promise(resolve => setTimeout(resolve, 2000))
+            fetchData();
+          }
+          break;
+        case 2:
+          setGuess(0);
+          console.log('g3');
+          toggleCorrectCollege(false);
+          updateScore(correct);
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          fetchData();
+          break;
+        default:
+          setGuess(0);
+          console.log('g');
+          break;
+      }
     }   
 
     function updateScore(correct: boolean) {
@@ -73,7 +106,8 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
     const player = players?.at(Math.floor(Math.random()*players?.length))
     const playerCollegeData = await supabase.from('player_colleges').select('colleges!inner(name), players!inner(name)').eq('players.id', player?.id);
 
-    toggleCollege(true);
+    setSelectedCollegeColor('inherit');
+    toggleCorrectCollege(true);
     // setPlayers(playerData?.data!)
     // setColleges(collegeData?.data!)
     setPlayerColleges(playerCollegeData?.data!)
@@ -81,13 +115,17 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
     setSearchInput("");
   }
 
-  function toggleCollege(hide: boolean) {
+  function toggleCorrectCollege(hide: boolean) {
     if(hide) {
         document.getElementById('correctCollege')!.style.display = 'none';
     } else {
         document.getElementById('correctCollege')!.style.display = 'flex';
-    }
-    
+    } 
+  }
+
+  function setSelectedCollegeColor(color: string) {
+    let a = document.getElementById('selectedCollege');
+    a!.style.backgroundColor = color;
   }
 
   let imgsrc = "https://www.basketball-reference.com/req/202106291/images/headshots/" + player?.id + ".jpg";
