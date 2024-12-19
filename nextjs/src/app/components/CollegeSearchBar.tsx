@@ -1,21 +1,21 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Player, College, PlayerCollege } from '../page';
+import { Player, PlayerCollege } from '../page';
 
 interface CollegeSearchBarProps {
-    colleges: Array<College>,
-    playerColleges: Array<any>,
+    player: any,
+    colleges: Array<any>,
     hooks: {searchInput: string, setSearchInput: any,
         streak: number, setStreak: any,
         highScore: number, setHighScore: any,
         currentHighScore: string, createHighScore: any,
         selectedCollege: any, setSelectedCollege: any,
-        filteredColleges: Array<College>, setFilteredColleges: any
+        filteredColleges: Array<any>, setFilteredColleges: any
     }
 }
 
-const CollegeSearchBar = ({ playerColleges, colleges, hooks }: CollegeSearchBarProps) => {
+const CollegeSearchBar = ({ player, colleges, hooks }: CollegeSearchBarProps) => {
 
     const handleChange = (e: React.ChangeEvent<any>) => {
         e.preventDefault();
@@ -36,7 +36,7 @@ const CollegeSearchBar = ({ playerColleges, colleges, hooks }: CollegeSearchBarP
         }
     }, [hooks.searchInput, colleges]);
 
-    const selectCollege = async (college: College) => {
+    const selectCollege = async (college: any) => {
         hooks.setSelectedCollege(college);
         document.getElementById('selectedCollege')!.style.backgroundColor = '';
         
@@ -65,8 +65,8 @@ const CollegeSearchBar = ({ playerColleges, colleges, hooks }: CollegeSearchBarP
             
             <div id='correctCollege' className='flex flex-col text-center rounded-xl hidden'>
             <strong>Correct Colleges:</strong> 
-            {playerColleges.map((playerCollege, index) => 
-                <div key={index}>{playerCollege.colleges.name}</div>
+            {player.colleges.map((playerCollege, index: number) => 
+                <div key={index}>{playerCollege?.name}</div>
             )}
             </div>
         </div>

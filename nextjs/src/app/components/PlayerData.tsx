@@ -3,24 +3,23 @@
 import { createClient } from '../utils/supabase/client'
 import CollegeSearchBar from './CollegeSearchBar'
 import { useState, useEffect } from 'react';
-import { Player, College, PlayerCollege } from '../page';
+import { Player, PlayerCollege } from '../page';
 
 interface PlayerDataProps {
-    playerData: Array<Player>,
-    playerCollegeData: Array<any>,
-    collegeData: Array<College>,
-    currentPlayer: Player,
+    playerData: Array<any>,
+    collegeData: Array<any>,
+    currentPlayer: any,
     currentHighScore: any,
     createHighScore: any
 }
 
-export default function PlayerData({playerData, playerCollegeData, collegeData, currentPlayer, currentHighScore, createHighScore }: PlayerDataProps) {
+export default function PlayerData({playerData, collegeData, currentPlayer, currentHighScore, createHighScore }: PlayerDataProps) {
     const supabase = createClient()
 
     const [searchInput, setSearchInput] = useState("");
     const [players, setPlayers] = useState(playerData);
     const [colleges, setColleges] = useState(collegeData);
-    const [playerColleges, setPlayerColleges] = useState(playerCollegeData);
+    // const [playerColleges, setPlayerColleges] = useState(playerCollegeData);
     const [player, setPlayer] = useState(currentPlayer);
     const [streak, setStreak] = useState(0);
     const [highScore, setHighScore] = useState(0);
@@ -32,15 +31,15 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
       setGuess(guess+1);
       let a = document.getElementById('selectedCollege');
       let correct = false;
-      if(playerColleges == null || playerColleges.length == 0) {
+      if(player.colleges == null || player.colleges.length == 0) {
           if(selectedCollege?.name == 'None') {
               correct = true;
           } else {
               correct = false;
           }
       } else {
-          playerColleges.forEach(playerCollege => {
-              if(playerCollege.colleges.name == selectedCollege?.name) {
+          player.colleges.forEach(playerCollege => {
+              if(playerCollege?.name == selectedCollege?.name) {
                   correct = true;
               }
           })
@@ -110,7 +109,7 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
     toggleCorrectCollege(true);
     // setPlayers(playerData?.data!)
     // setColleges(collegeData?.data!)
-    setPlayerColleges(playerCollegeData?.data!)
+    // setPlayerColleges(playerCollegeData?.data!)
     setPlayer(player!);
     setSearchInput("");
   }
@@ -145,10 +144,9 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
         </div>
       </div>
       
-        {playerColleges 
-        && colleges &&
-        <CollegeSearchBar 
-        playerColleges={playerColleges} 
+        {player && colleges &&
+        <CollegeSearchBar
+        player={player}
         colleges={colleges} 
         hooks={{searchInput, setSearchInput, 
         streak, setStreak, 
@@ -159,6 +157,7 @@ export default function PlayerData({playerData, playerCollegeData, collegeData, 
         <button onClick={guessCollege} type='submit' className='m-4 bg-red-400 px-10 py-2 rounded-full'>Submit Guess</button>
         <h1>Streak: { streak }</h1>
         <h1>High Score: { currentHighScore }</h1>
+        <div>{player.colleges[0]?.conference?.name}</div>
     </div>
   )
 }
