@@ -103,7 +103,7 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
 
       let divChild = document.createElement("div");
       divChild.textContent = (guess+1).toString() || "N/A";
-      divChild.className = 'border rounded-md px-1 text-center'
+      divChild.className = 'border rounded-md px-1 text-center w-full'
       guessNum?.appendChild(divChild);
 
       createGuessBoxElement(selectedCollege?.name, playerCollege?.name, college!);
@@ -121,7 +121,7 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
       } else {
         divChild.style.backgroundColor = 'indianred';
       }
-      divChild.className = 'border rounded-md px-1 text-center'
+      divChild.className = 'border rounded-md px-1 text-center w-full'
       col?.appendChild(divChild);
     }
 
