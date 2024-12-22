@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
 import { createClient } from '../utils/supabase/client'
 import CollegeSearchBar from './CollegeSearchBar'
 import { useState, useEffect } from 'react';
 import { Player, PlayerCollege } from '../page';
+import GuessBox from './GuessBox';
 
 interface PlayerDataProps {
     playerData: Array<any>,
@@ -19,7 +20,6 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
     const [searchInput, setSearchInput] = useState("");
     const [players, setPlayers] = useState(playerData);
     const [colleges, setColleges] = useState(collegeData);
-    // const [playerColleges, setPlayerColleges] = useState(playerCollegeData);
     const [player, setPlayer] = useState(currentPlayer);
     const [streak, setStreak] = useState(0);
     const [highScore, setHighScore] = useState(0);
@@ -27,9 +27,11 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
     const [selectedCollege, setSelectedCollege] = useState(colleges.at(0));
     const [guess, setGuess] = useState(0);
 
+    
+    
+
     async function guessCollege() {
       setGuess(guess+1);
-      let a = document.getElementById('selectedCollege');
       let correct = false;
       if(player.colleges == null || player.colleges.length == 0) {
           if(selectedCollege?.name == 'None') {
@@ -38,7 +40,7 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
               correct = false;
           }
       } else {
-          player.colleges.forEach(playerCollege => {
+          player.colleges.forEach((playerCollege: { name: any; }) => {
               if(playerCollege?.name == selectedCollege?.name) {
                   correct = true;
               }
@@ -50,6 +52,10 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
       } else {
         setSelectedCollegeColor('indianred');
       }
+
+      player.colleges.forEach((college: any) => {
+        addGuessBox(college);
+      });
 
       switch(guess) {
         case 0:
@@ -84,8 +90,55 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
           setGuess(0);
           console.log('g');
           break;
+        } 
+    }
+
+    function addGuessBox(playerCollege: any) {
+      let guessNum = document.getElementById('guessNum');
+      let college = document.getElementById('college');
+      let division = document.getElementById('division');
+      let conference = document.getElementById('conference');
+      let region = document.getElementById('region');
+      let state = document.getElementById('state');
+
+      let divChild = document.createElement("div");
+      divChild.textContent = (guess+1).toString() || "N/A";
+      divChild.className = 'border rounded-md px-1 text-center'
+      guessNum?.appendChild(divChild);
+
+      createGuessBoxElement(selectedCollege?.name, playerCollege?.name, college!);
+      createGuessBoxElement(selectedCollege?.conference?.division?.name, playerCollege?.conference?.division?.name, division!);
+      createGuessBoxElement(selectedCollege?.conference?.name, playerCollege?.conference?.name, conference!);
+      createGuessBoxElement(selectedCollege?.state?.region?.name, playerCollege?.state?.region?.name, region!);
+      createGuessBoxElement(selectedCollege?.state?.name, playerCollege?.state?.name, state!);
+    }
+
+    function createGuessBoxElement(guess: string, answer: string, col: HTMLElement) {
+      let divChild = document.createElement("div");
+      divChild.textContent = guess || "N/A";
+      if(guess == answer) {
+        divChild.style.backgroundColor = 'lightgreen';
+      } else {
+        divChild.style.backgroundColor = 'indianred';
       }
-    }   
+      divChild.className = 'border rounded-md px-1 text-center'
+      col?.appendChild(divChild);
+    }
+
+    function clearGuessBox() {
+      let guessNum = document.getElementById('guessNum');
+      let college = document.getElementById('college');
+      let division = document.getElementById('division');
+      let conference = document.getElementById('conference');
+      let region = document.getElementById('region');
+      let state = document.getElementById('state');
+      guessNum!.innerHTML = '<div>Guess #<div/>';
+      college!.innerHTML = '<div>College<div/>';
+      division!.innerHTML = '<div>Division<div/>';
+      conference!.innerHTML = '<div>Conference<div/>';
+      state!.innerHTML = '<div>State<div/>';
+      region!.innerHTML = '<div>Region<div/>';
+    }
 
     function updateScore(correct: boolean) {
         if(correct) {
@@ -100,18 +153,12 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
     }
 
   const fetchData = async () => {
-    // const playerData = await supabase.from('players').select('*').order('played_to', {ascending: false});
-    // const collegeData = await supabase.from('colleges').select('name').order('name', { ascending: true });
     const player = players?.at(Math.floor(Math.random()*players?.length))
-    const playerCollegeData = await supabase.from('player_colleges').select('colleges!inner(name), players!inner(name)').eq('players.id', player?.id);
-
     setSelectedCollegeColor('inherit');
     toggleCorrectCollege(true);
-    // setPlayers(playerData?.data!)
-    // setColleges(collegeData?.data!)
-    // setPlayerColleges(playerCollegeData?.data!)
     setPlayer(player!);
     setSearchInput("");
+    clearGuessBox();
   }
 
   function toggleCorrectCollege(hide: boolean) {
@@ -155,9 +202,12 @@ export default function PlayerData({playerData, collegeData, currentPlayer, curr
         selectedCollege, setSelectedCollege, 
         filteredColleges, setFilteredColleges}} />}
         <button onClick={guessCollege} type='submit' className='m-4 bg-red-400 px-10 py-2 rounded-full'>Submit Guess</button>
+        
+
+        <GuessBox />
+
         <h1>Streak: { streak }</h1>
         <h1>High Score: { currentHighScore }</h1>
-        <div>{player.colleges[0]?.conference?.name}</div>
     </div>
   )
 }

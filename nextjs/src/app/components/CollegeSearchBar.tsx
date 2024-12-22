@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, AwaitedReactNode, JSXElementConstructor, ReactElement, ReactNode, ReactPortal } from 'react'
 import { Player, PlayerCollege } from '../page';
 
 interface CollegeSearchBarProps {
@@ -65,7 +65,7 @@ const CollegeSearchBar = ({ player, colleges, hooks }: CollegeSearchBarProps) =>
             
             <div id='correctCollege' className='flex flex-col text-center rounded-xl hidden'>
             <strong>Correct Colleges:</strong> 
-            {player.colleges.map((playerCollege, index: number) => 
+            {player.colleges.map((playerCollege: { name: string }, index: number) => 
                 <div key={index}>{playerCollege?.name}</div>
             )}
             </div>
