@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Image from "next/image";
 import "./globals.css";
-import github from './icons/github-mark-white.svg';
+import github from './icons/github-mark.svg';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,9 +43,10 @@ export default async function RootLayout({
             </div>
           </div>
         </div>
-        <footer className="flex flex-row items-end justify-center w-full h-full mt-20 rounded-t-xl">
-          <div className="flex flex-row items-center justify-center bg-black w-full max-h-24">
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/plenahan/nbawheredtheygo"><Image priority className="w-14 py-4" src={github} alt={""}/></a>
+        <footer className="flex flex-row items-end justify-center w-full h-full mt-10 rounded-t-xl">
+          <div className="flex flex-col items-center justify-center w-full max-h-24">
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/plenahan/nbawheredtheygo"><Image priority className="w-10 pb-4" src={github} alt={""}/></a>
+            <p>All Data & Images from <a className="text-blue-500" href="https://www.basketball-reference.com/">Basketball Reference</a></p>
           </div>
         </footer>
       </body>
