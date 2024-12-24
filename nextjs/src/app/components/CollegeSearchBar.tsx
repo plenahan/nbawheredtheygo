@@ -44,20 +44,22 @@ const CollegeSearchBar = ({ player, colleges, hooks }: CollegeSearchBarProps) =>
 
     return (
         <div className='flex flex-col items-center max-w-xs m-4 w-72'>
-            <input id="collegeSearch"
-            type="search"
-            className='text-center mx-4 rounded-t-xl w-72' 
-            placeholder="Enter College"
-            onChange={handleChange}
-            value={hooks.searchInput} />
-            <div className='flex flex-col w-auto items-center bg-white max-h-72 w-72 rounded-b-xl overflow-auto overflow-x-hidden'>
-                {hooks.filteredColleges.map((college, index) => (
-                    <div onClick={() => selectCollege(college)} 
-                    className={`m-y-0.5 text-center hover:bg-red-200 rounded w-72 cursor-pointer ${hooks.selectedCollege?.name === college.name ? 'bg-red-400' : ''}`} 
-                    key={index}>
-                        {college.name}
-                    </div>
-                ))}
+            <div className='h-96 flex flex-col w-full items-center'>
+                <input id="collegeSearch"
+                type="search"
+                className='text-center mx-4 rounded-t-xl w-72' 
+                placeholder="Enter College"
+                onChange={handleChange}
+                value={hooks.searchInput} />
+                <div className='flex flex-col w-auto items-center bg-white max-h-72 w-72 rounded-b-xl overflow-auto overflow-x-hidden'>
+                    {hooks.filteredColleges.map((college, index) => (
+                        <div onClick={() => selectCollege(college)} 
+                        className={`m-y-0.5 text-center hover:bg-red-200 rounded w-72 cursor-pointer ${hooks.selectedCollege?.name === college.name ? 'bg-red-400' : ''}`} 
+                        key={index}>
+                            {college.name}
+                        </div>
+                    ))}
+                </div>
             </div>
             <div id='selectedCollege' className='mt-4 flex flex-col text-center rounded-xl p-1'>
                 <strong>Guess:</strong> {hooks.selectedCollege?.name}
