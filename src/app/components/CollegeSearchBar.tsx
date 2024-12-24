@@ -44,7 +44,7 @@ const CollegeSearchBar = ({ player, colleges, hooks }: CollegeSearchBarProps) =>
 
     return (
         <div className='flex flex-col items-center max-w-xs m-4 w-72'>
-            <div className='h-96 flex flex-col w-full items-center'>
+            <div className='h-72 flex flex-col w-full items-center'>
                 <input id="collegeSearch"
                 type="search"
                 className='text-center mx-4 rounded-t-xl w-72' 
